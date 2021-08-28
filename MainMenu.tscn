@@ -1,0 +1,143 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://tiles_classic.tres" type="TileSet" id=1]
+[ext_resource path="res://MainMenu.gd" type="Script" id=2]
+[ext_resource path="res://assets/player.png" type="Texture" id=3]
+[ext_resource path="res://Player.gd" type="Script" id=4]
+[ext_resource path="res://assets/Roboto-Regular.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Goal.tscn" type="PackedScene" id=7]
+[ext_resource path="res://TitleFont.tres" type="DynamicFont" id=9]
+[ext_resource path="res://Maze.gd" type="Script" id=11]
+
+[sub_resource type="DynamicFont" id=1]
+size = 128
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 5 )
+
+[node name="Maze" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+limit_left = 0
+limit_top = 0
+smoothing_enabled = true
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -2000.0
+margin_top = -2000.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+format = 1
+tile_data = PoolIntArray( 983039, 9, 0, 917504, 5, 0, 917505, 5, 0, 917506, 5, 0, 917507, 5, 0, 917508, 3, 0, 1048575, 10, 0, 983044, 8, 0, 983045, 5, 0, 983046, 5, 0, 983047, 5, 0, 983048, 5, 0, 983049, 5, 0, 983050, 5, 0, 983051, 5, 0, 983052, 5, 0, 983053, 5, 0, 983054, 5, 0, 983055, 5, 0, 983056, 5, 0, 983057, 7, 0, 1114111, 10, 0, 1048580, 10, 0, 1179647, 10, 0, 1114116, 10, 0, 1245183, 10, 0, 1179652, 10, 0, 1310719, 10, 0, 1245188, 10, 0, 1376255, 10, 0, 1310724, 8, 0, 1310725, 5, 0, 1310726, 5, 0, 1310727, 5, 0, 1310728, 5, 0, 1310729, 5, 0, 1310730, 5, 0, 1310731, 5, 0, 1310732, 5, 0, 1310733, 5, 0, 1310734, 5, 0, 1310735, 5, 0, 1310736, 5, 0, 1310737, 7, 0, 1441791, 10, 0, 1376260, 10, 0, 1507327, 10, 0, 1441796, 10, 0, 1572863, 10, 0, 1507332, 10, 0, 1638399, 10, 0, 1572868, 10, 0, 1703935, 10, 0, 1638404, 8, 0, 1638405, 5, 0, 1638406, 5, 0, 1638407, 5, 0, 1638408, 5, 0, 1638409, 5, 0, 1638410, 5, 0, 1638411, 5, 0, 1638412, 5, 0, 1638413, 5, 0, 1638414, 5, 0, 1638415, 5, 0, 1638416, 5, 0, 1638417, 7, 0, 1769471, 10, 0, 1703940, 10, 0, 1835007, 10, 0, 1769476, 10, 0, 1900543, 10, 0, 1835012, 10, 0, 1966079, 10, 0, 1900548, 10, 0, 2031615, 12, 0, 1966080, 5, 0, 1966081, 5, 0, 1966082, 5, 0, 1966083, 5, 0, 1966084, 6, 0 )
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Trail" type="Line2D" parent="."]
+visible = false
+width = 32.0
+default_color = Color( 1, 1, 1, 1 )
+
+[node name="Player" type="Sprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 3 )
+script = ExtResource( 4 )
+MapPath = NodePath("../TileMap")
+TrailPath = NodePath("../Trail")
+GoalPath = NodePath("../Goal")
+
+[node name="TrailTween" type="Tween" parent="Player"]
+
+[node name="Goal" parent="." instance=ExtResource( 7 )]
+position = Vector2( -2000, -2000 )
+pos = Vector2( -100, -100 )
+
+[node name="Title" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -1000.0
+margin_top = 84.0
+margin_right = -74.0
+margin_bottom = 291.0
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 9 )
+text = "FineMaze"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Start Game" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -929.365
+margin_top = 790.353
+margin_right = -3.36475
+margin_bottom = 997.353
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 1 )
+text = "Start Game"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Options" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -929.365
+margin_top = 1095.35
+margin_right = -3.36475
+margin_bottom = 1302.35
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 1 )
+text = "Options"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Exit" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -929.365
+margin_top = 1429.35
+margin_right = -3.36475
+margin_bottom = 1636.35
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 1 )
+text = "Exit"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]

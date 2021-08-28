@@ -1,0 +1,233 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://tiles_classic.tres" type="TileSet" id=1]
+[ext_resource path="res://Game.gd" type="Script" id=2]
+[ext_resource path="res://assets/player.png" type="Texture" id=3]
+[ext_resource path="res://Goal.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/menu_icon.png" type="Texture" id=5]
+[ext_resource path="res://assets/restart.png" type="Texture" id=6]
+[ext_resource path="res://Maze.gd" type="Script" id=7]
+[ext_resource path="res://assets/Main_DynamicFont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://TitleFont.tres" type="DynamicFont" id=9]
+[ext_resource path="res://assets/play.png" type="Texture" id=10]
+[ext_resource path="res://Player.gd" type="Script" id=11]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[node name="Game" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 1080, 1920 )
+handle_input_locally = false
+hdr = false
+disable_3d = true
+usage = 0
+render_target_update_mode = 3
+
+[node name="Camera2D" type="Camera2D" parent="ViewportContainer/Viewport"]
+rotation = 0.785398
+rotating = true
+current = true
+zoom = Vector2( 10, 10 )
+limit_left = 0
+limit_top = 0
+smoothing_enabled = true
+
+[node name="Background" type="ColorRect" parent="ViewportContainer/Viewport"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -2000.0
+margin_top = -2000.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TileMap" type="TileMap" parent="ViewportContainer/Viewport"]
+tile_set = ExtResource( 1 )
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+format = 1
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Trail" type="Line2D" parent="ViewportContainer/Viewport"]
+width = 32.0
+default_color = Color( 1, 1, 1, 1 )
+
+[node name="Player" type="Sprite" parent="ViewportContainer/Viewport"]
+position = Vector2( 32, 32 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 3 )
+script = ExtResource( 11 )
+MapPath = NodePath("../TileMap")
+TrailPath = NodePath("../Trail")
+GoalPath = NodePath("../Goal")
+
+[node name="TrailTween" type="Tween" parent="ViewportContainer/Viewport/Player"]
+
+[node name="Goal" parent="ViewportContainer/Viewport" instance=ExtResource( 4 )]
+
+[node name="PauseMenu" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuScreen" type="Control" parent="PauseMenu"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PauseBG" type="ColorRect" parent="PauseMenu/MenuScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RestartBtn" type="TextureButton" parent="PauseMenu/MenuScreen"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -128.0
+margin_top = -128.0
+margin_right = 128.0
+margin_bottom = 128.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 6
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PaletteButton" type="Button" parent="PauseMenu/MenuScreen"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -126.0
+margin_top = -467.0
+margin_right = 126.0
+margin_bottom = -360.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_styles/focus = SubResource( 1 )
+custom_fonts/font = ExtResource( 8 )
+text = "Pastel"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuBtn" type="TextureButton" parent="PauseMenu"]
+modulate = Color( 1, 1, 1, 0.392157 )
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -180.0
+margin_bottom = 180.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 5 )
+expand = true
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="MainMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="MainMenu"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -1000.0
+margin_top = 84.0
+margin_right = -74.0
+margin_bottom = 291.0
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 9 )
+text = "FineMaze"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartButton" type="TextureButton" parent="MainMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -256.0
+margin_top = -256.0
+margin_right = 256.0
+margin_bottom = 256.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+size_flags_stretch_ratio = 1.5
+texture_normal = ExtResource( 10 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
+[connection signal="generation_done" from="ViewportContainer/Viewport/TileMap" to="." method="_on_TileMap_generation_done"]
+[connection signal="pressed" from="PauseMenu/MenuScreen/RestartBtn" to="." method="_on_RestartBtn_pressed"]
+[connection signal="pressed" from="PauseMenu/MenuScreen/PaletteButton" to="." method="_on_PaletteLabel_pressed"]
+[connection signal="pressed" from="PauseMenu/MenuBtn" to="." method="_on_TextureButton_pressed"]
+[connection signal="pressed" from="MainMenu/StartButton" to="." method="_on_StartButton_pressed"]
